@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Gest</string>
+    <string name="invalid_move">Invalid move </string>
+</resources>
