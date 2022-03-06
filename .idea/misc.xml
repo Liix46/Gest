@@ -6,7 +6,7 @@
         <entry key="app/src/main/res/drawable/cell.xml" value="0.1125" />
         <entry key="app/src/main/res/drawable/cell_0_shape.xml" value="0.1125" />
         <entry key="app/src/main/res/drawable/cell_shape.xml" value="0.1125" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21010150256009127" />
       </map>
     </option>
   </component>
@@ -15,5 +15,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.1" />
+      </ProjectState>
+    </option>
   </component>
 </project>

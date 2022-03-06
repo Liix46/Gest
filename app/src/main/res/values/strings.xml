@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Gest</string>
     <string name="invalid_move">Invalid move </string>
+    <string name="game_over">Congratulations!</string>
+    <string name="start_level">1 level</string>
+    <string name="info_level"> level</string>
+    <string name="info_steps">Steps</string>
 </resources>
