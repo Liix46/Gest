@@ -5,4 +5,8 @@
     <string name="start_level">1 level</string>
     <string name="info_level"> level</string>
     <string name="info_steps">Steps</string>
+
+    <string name="portal_title">Android portal</string>
+    <string name="portal_game15">Game 15 (Swipes)</string>
+    <string name="portal_inet">Internet</string>
 </resources>

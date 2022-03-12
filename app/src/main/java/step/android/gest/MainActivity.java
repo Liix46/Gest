@@ -1,8 +1,11 @@
 package step.android.gest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     Random random;
     int _steps;
+    int _level;
     TextView textView;
     SeekBar seekBar;
     final int complexity;
@@ -27,8 +31,49 @@ public class MainActivity extends AppCompatActivity {
     public MainActivity(){
         random = new Random();
         _steps = 0;
-       // complexity = 20;
-        complexity = 1;
+        complexity = 20;
+       // complexity = 1;
+        _level = 1;
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // current field state:
+        CharSequence[] cellText = new CharSequence[16] ;
+        for (int i = 0; i < 16; ++i){
+            cellText[i] = getCellByIndex(i).getText() ;
+        }
+        outState.putCharSequenceArray("fieldState", cellText) ;
+        outState.putInt("stepsState", _steps);
+        outState.putInt("complexityState", _level);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        _steps = savedInstanceState.getInt("stepsState");
+        _level = savedInstanceState.getInt("complexityState");
+        CharSequence[] cellText = savedInstanceState.getCharSequenceArray("fieldsState") ;
+        for ( int i = 0; i < 16; ++i ){
+            TextView cell = getCellByIndex(i);
+            cell.setText(cellText[i]);
+            if ( cellText[ i ].equals( "" ) ) {
+                cell.setBackground(
+                        AppCompatResources.getDrawable(
+                                getApplicationContext(),
+                                R.drawable.cell_shape
+                ));
+            } else {
+                cell.setBackground(
+                        AppCompatResources.getDrawable(
+                                getApplicationContext(),
+                                R.drawable.cell_0_shape
+                ) );
+            }
+        }
     }
 
     @Override
@@ -57,43 +102,42 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-        buttonLevel = (Button) findViewById(R.id.buttonLevel);
-        seekBar = (SeekBar)findViewById(R.id.seekBar);
+        buttonLevel = findViewById(R.id.buttonLevel);
+        seekBar = findViewById(R.id.seekBar);
         textView = findViewById(R.id.textView2);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                textView.setText(String.valueOf(progress) + " level");
+                textView.setText(progress + " level");
+                _level = progress;
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                return;
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                return;
             }
         });
 
-        buttonLevel.setOnClickListener(new View.OnClickListener(){
+        buttonLevel.setOnClickListener(view -> {
+           int level =  seekBar.getProgress();
+           if (savedInstanceState == null){
+               shuffle(level);
+           }
 
-            @Override
-            public void onClick(View view) {
-               int level =  seekBar.getProgress();
-                shuffle(level);
 
-                textView.setText("");
-                buttonLevel.setVisibility(View.INVISIBLE);
-                seekBar.setVisibility(View.INVISIBLE);
-                fieldLayout.setVisibility(View.VISIBLE);
-            }
+           textView.setText("");
+           buttonLevel.setVisibility(View.INVISIBLE);
+           seekBar.setVisibility(View.INVISIBLE);
+           fieldLayout.setVisibility(View.VISIBLE);
         });
 
-        fieldLayout = (TableLayout) findViewById(R.id.fieldLayout);
+        fieldLayout = findViewById(R.id.fieldLayout);
         fieldLayout.setVisibility(View.INVISIBLE);
 
     }
@@ -102,10 +146,11 @@ public class MainActivity extends AppCompatActivity {
      * Move after and game checking
      * @param direction swipe direction
      */
+    @SuppressLint("SetTextI18n")
     private void userMove(MoveDirection direction){
         if (moveCell( direction )){
             _steps++;
-            textView.setText(String.valueOf(_steps) + " steps");
+            textView.setText(_steps + " steps");
             if (isGameOver()){
                 // Alert Dialog
                 new AlertDialog.Builder(MainActivity.this )
@@ -120,9 +165,7 @@ public class MainActivity extends AppCompatActivity {
                             fieldLayout.setVisibility(View.INVISIBLE);
                             _steps = 0;
                         })
-                        .setNegativeButton("No", (dialog, which) -> {
-                            finish();
-                        })
+                        .setNegativeButton("No", (dialog, which) -> finish())
 //                        .setNeutralButton("Rnd", (dialog, which) -> {
 //                            if ( random.nextBoolean() ){
 //                                shuffle(seekBar.getProgress());
@@ -245,3 +288,43 @@ public class MainActivity extends AppCompatActivity {
         TOP
     }
 }
+
+/*
+Manifest
+Файл манифеста соединяет в себе "декларации",
+касающейся всего приложения:
+- активности и их связи
+- переключение / фиксация орентации экрана
+- требуемые разрешения / доступ к модулям устройства
+(Интернет, Контакты, Камера)
+
+Жизненный цикл активности предусматривает пересоздания (вызов onCreate) при
+    изменениях ориентациях ориентации устройства / размеров приложения
+    определить первая ли это сборка или реакции на изменения можно при помощи
+    параметра, передаваемого в onCreate - savedInstanceState
+        null - первая сборка
+        !null - непервая сборка
+Средствами манифеста можно зафиксировать ориентацию активности, указав
+android:screenOrientation="portrait"
+
+-------
+Активности
+добавление через меню
+в манифесте указываем атрибуты (опционально)
+для перехода на новую активность
+    а) если хотим сделать главной - меняем в монифесте <intent-filter>
+    б) если просто запустить ( по нажатию кнопки) - создаем Intent, указываем
+       класс новой активности и вызываем startActivity(intent)
+Для указания отношений между активностями в манифесте записываем
+android:parentActivityName="..." в атрибутах соответствуйщей активности
+в таком случае на панели приложения будет автомотически формироваться "<-",
+возвращающая на родительскую активность
+-------
+единицы размеров
+dp - density pixel - приаязан к физическому размеру, разное кол-во
+    для разной плотности экрана
+sp - scalable pixel - увеличене с действием масштаба
+( в основном для шрифтов)
+
+
+ */
