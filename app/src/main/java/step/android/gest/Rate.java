@@ -1,5 +1,12 @@
 package step.android.gest;
 
+import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +25,8 @@ public class Rate {
     private String cc ;
     private Date exchangeDate ;
 
-    private static SimpleDateFormat parser =
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat parser =
             new SimpleDateFormat("dd.MM.yyyy");
 
 
@@ -29,6 +37,21 @@ public class Rate {
         this.setRate(rate);
         this.setCc(cc);
         this.setExchangeDate(exchangeDate);
+    }
+
+    public Rate(JSONObject jsonObject) throws JSONException, ParseException {
+        this.setR030(jsonObject.getInt( "r030"));
+        this.setTxt(jsonObject.getString("txt" ));
+        this.setRate(jsonObject.getDouble("rate" ));
+        this.setCc(jsonObject.getString( "cc" ));
+        this.setExchangeDate(jsonObject.getString( "exchangedate" ));
+    }
+
+    @NonNull
+    @Override
+    @SuppressLint("DefaultLocale")
+    public String toString(){
+        return String.format("%s %f", this.txt, this.rate) ;
     }
 
     public int getR030() {
