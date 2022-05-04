@@ -2,10 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="step.android.gest">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,9 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gest">
         <activity
-            android:name=".CurrencyActivity"
+            android:name=".ChatActivity"
+            android:exported="false"
             android:parentActivityName=".PortalActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".CurrencyActivity"
+            android:exported="false"
+            android:parentActivityName=".PortalActivity" />
         <activity
             android:name=".PortalActivity"
             android:exported="true">
@@ -28,9 +32,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:parentActivityName=".PortalActivity"
-            />
-
+            android:parentActivityName=".PortalActivity" />
     </application>
 
 </manifest>

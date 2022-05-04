@@ -11,4 +11,6 @@
     <color name="cell_background">#B86F04</color>
     <color name="cell_frame">#E8A035</color>
     <color name="cell_text">#AEF0F8</color>
+
+    <color name="chat_border">#AEF0F8</color>
 </resources>

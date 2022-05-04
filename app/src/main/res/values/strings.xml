@@ -9,6 +9,7 @@
     <string name="portal_title">Android portal</string>
     <string name="portal_game15">Game 15 (Swipes)</string>
     <string name="portal_inet">Internet</string>
+    <string name="portal_chat">Chat</string>
 
     <string name="count_message">Loaded courses: %d</string>
     <string name="btn_date">Load course</string>

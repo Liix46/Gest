@@ -32,6 +32,13 @@ public class PortalActivity extends AppCompatActivity {
                             CurrencyActivity.class
             ));
         });
+        findViewById(R.id.chat_button).setOnClickListener(v -> {
+            startActivity(
+                    new Intent(
+                            PortalActivity.this,
+                            ChatActivity.class
+                    ));
+        });
     }
 
     @Override
