@@ -13,4 +13,9 @@
     <color name="cell_text">#AEF0F8</color>
 
     <color name="chat_border">#AEF0F8</color>
+
+    <color name="my_message">#145F91</color>
+    <color name="message">#939392</color>
+
+    <color name="button">#273581</color>
 </resources>

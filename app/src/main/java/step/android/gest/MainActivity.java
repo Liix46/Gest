@@ -166,12 +166,6 @@ public class MainActivity extends AppCompatActivity {
                             _steps = 0;
                         })
                         .setNegativeButton("No", (dialog, which) -> finish())
-//                        .setNeutralButton("Rnd", (dialog, which) -> {
-//                            if ( random.nextBoolean() ){
-//                                shuffle(seekBar.getProgress());
-//                            }
-//                            else finish();
-//                        })
                         .show();
             }
         }

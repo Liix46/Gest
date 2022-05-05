@@ -7,77 +7,107 @@
     tools:context=".ChatActivity"
     android:id="@+id/chatLayout"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:background="@drawable/background_chat"
+    >
 
-    <TextView
-        android:id="@+id/tvChat"
-        android:layout_width="385dp"
+
+    <ScrollView
+        android:id="@+id/chatScroll"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/border"
-        android:text="TextView\nTextView\nTextView\nTextView\nTextView\n"
+        app:layout_constraintWidth_percent=".8"
+        app:layout_constraintHeight_percent=".4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".4"
-        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036" />
+        app:layout_constraintVertical_bias="0.066" >
+    <LinearLayout
+        android:id="@+id/chatContainer"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </ScrollView>
 
     <LinearLayout
-        android:layout_width="385dp"
-        android:layout_height="0dp"
-        android:background="@drawable/border"
+        android:layout_width="380dp"
+        android:layout_height="170dp"
         android:orientation="vertical"
+        app:layout_constraintHeight_percent=".25"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvChat"
-        app:layout_constraintVertical_bias="0.865">
+        app:layout_constraintTop_toBottomOf="@+id/chatScroll">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:background="@drawable/border"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:background="@drawable/textview"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="5dp">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="bottom"
-                android:paddingBottom="15dp"
-                android:text="Author" />
+                android:gravity="center_vertical"
+                android:text="Author"
+                android:textSize="8pt"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"/>
 
             <EditText
                 android:id="@+id/etAuthor"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="42dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:gravity="bottom"
+                android:gravity="top"
                 android:inputType="textPersonName"
-                android:text="Liix" />
+                android:text="Liix"/>
         </LinearLayout>
 
         <EditText
             android:id="@+id/etMessage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:text="Hello" />
+            android:background="@drawable/textview"
+            android:layout_marginHorizontal="5dp"
+            android:paddingHorizontal="5dp"/>
+
         <Button
             android:id="@+id/buttonSend"
-            android:layout_height="60dp"
             android:layout_width="match_parent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:text="Send"  />
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_weight="2"
+            android:background="@drawable/button"
+            android:focusable="true"
+            android:text="Send"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            app:cornerRadius="10dp"
+            />
     </LinearLayout>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--   android:backgroundTint="@color/button" -->
