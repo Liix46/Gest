@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.vdurmont.emoji.EmojiParser;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +36,7 @@ public class ChatMessage
     public ChatMessage(@NonNull JSONObject object) throws JSONException, ParseException {
         setId(object.getInt("id"));
         setAuthor(object.getString("author"));
-        setText(object.getString("text"));
+        setText(EmojiParser.parseToUnicode(object.getString("text")));
         setMoment(object.getString("moment"));
         setDisplayed( false ) ;
     }

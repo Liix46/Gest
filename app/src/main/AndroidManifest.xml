@@ -13,10 +13,13 @@
         android:theme="@style/Theme.Gest"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".dialog"
+            android:exported="false" />
+        <activity
             android:name=".ChatActivity"
             android:exported="false"
             android:parentActivityName=".PortalActivity"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".CurrencyActivity"
             android:exported="false"
