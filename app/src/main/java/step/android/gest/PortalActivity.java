@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import step.android.gest.ui.login.LoginActivity;
+
 public class PortalActivity extends AppCompatActivity {
 
     @Override
@@ -36,7 +38,7 @@ public class PortalActivity extends AppCompatActivity {
             startActivity(
                     new Intent(
                             PortalActivity.this,
-                            ChatActivity.class
+                            LoginActivity.class
                     ));
         });
     }

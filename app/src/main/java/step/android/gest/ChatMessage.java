@@ -1,7 +1,5 @@
 package step.android.gest;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.vdurmont.emoji.EmojiParser;
@@ -11,7 +9,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -27,7 +24,13 @@ public class ChatMessage
 
     private final static SimpleDateFormat dtParser =
             new SimpleDateFormat(
-                    "yyyy-MM-dd hh:mm:ss",
+                    "yyyy-MM-dd hh:mm",
+                    Locale.UK
+            );
+
+    private final static SimpleDateFormat dtParser2 =
+            new SimpleDateFormat(
+                    "hh:mm",
                     Locale.UK
             );
 
@@ -78,6 +81,7 @@ public class ChatMessage
     ///////////////
 
 
+    @NonNull
     @Override
     public String toString() {
         return "{" +
@@ -88,12 +92,16 @@ public class ChatMessage
                 '}';
     }
     public String toChatString() {
-        String txt = getText() ;
-        if( txt.length() > 20 )
-            txt = txt.substring( 0, 20 ) + "..." ;
-
-        return dtParser.format( moment )
-                + " " + getAuthor()
-                + ": " + txt ;
+        StringBuilder stringBuilder = new StringBuilder(getAuthor());
+        if (stringBuilder.length() + getText().length() < 25){
+            stringBuilder.append(": ");
+            stringBuilder.append(getText());
+            stringBuilder.append(" ");
+            stringBuilder.append(dtParser2.format( moment));
+            return stringBuilder.toString();
+        }
+        return "" + getAuthor()
+                + "\n" + getText()
+                + "\n" + dtParser2.format( moment);
     }
 }

@@ -15,9 +15,11 @@
         <entry key="app/src/main/res/drawable/message.xml" value="0.137" />
         <entry key="app/src/main/res/drawable/my_message.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/textview.xml" value="0.261" />
-        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/time_message.xml" value="0.108" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_currency.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_dialog.xml" value="0.1265625" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.22177435833474868" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21010150256009127" />
         <entry key="app/src/main/res/layout/activity_portal.xml" value="0.1" />
         <entry key="app/src/main/res/layout/emoji_text_view.xml" value="0.1" />

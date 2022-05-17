@@ -31,15 +31,20 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 public class ChatActivity extends AppCompatActivity{
     private ImageView btEmoji, btSend;
-    private EditText etAuthor ;
     private EditText etMessage ;
     private  LinearLayout linear_layout;
     private LinearLayout chatContainer ;
+
+    private String author;
+    private Date dateMessage = null;
 
     // Data Context
     private final ArrayList<ChatMessage> messages = new ArrayList<>() ;
@@ -53,12 +58,17 @@ public class ChatActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState) ;
         setContentView(R.layout.activity_chat) ;
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            author = extras.getString("login");
+            //The key argument here must match that used in the other activity
+        }
+
         btEmoji = findViewById(R.id.bt_emoji);
         btSend = findViewById(R.id.bt_send);
         etMessage = findViewById(R.id.etMessage) ;
         linear_layout = findViewById(R.id.linear_layout);
 
-        etAuthor = findViewById(R.id.etAuthor) ;
         chatContainer = findViewById( R.id.chatContainer ) ;
 
         EmojiManager.install(new GoogleEmojiProvider());
@@ -139,26 +149,13 @@ public class ChatActivity extends AppCompatActivity{
     } ;
 
     private void sendButtonClick( View view ) {
-        String author = etAuthor.getText().toString() ;
         if( author.length() == 0 ) {
             Toast.makeText(this, R.string.chat_author_empty, Toast.LENGTH_SHORT).show();
             return ;
         }
-        String message = etMessage.getText().toString(); // Що це таке??
-
-
+        String message = etMessage.getText().toString();
 
         String result = EmojiParser.parseToAliases(message);
-
-//        message = message.replace("\\", "");
-//        String[] arr = message.split("u");
-//        String text = "";
-//        for(int i = 1; i < arr.length; i++){
-//            int hexVal = Integer.parseInt(arr[i], 16);
-//            text += (char)hexVal;
-//        }
-//        byte[] utf8Bytes = message.getBytes(StandardCharsets.UTF_8);
-//        text = new String(utf8Bytes, StandardCharsets.US_ASCII);
 
         if( message.length() == 0 ) {
             Toast.makeText(this, R.string.chat_message_empty, Toast.LENGTH_SHORT).show();
@@ -194,12 +191,21 @@ public class ChatActivity extends AppCompatActivity{
     }
 
     private void showMessagesInScroll() {
+
+        LinearLayout.LayoutParams layoutDataParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT ) ;
+        layoutDataParams.setMargins( 5,5,5,5 ) ;
+        layoutDataParams.gravity = Gravity.CENTER_HORIZONTAL;
+
         LinearLayout.LayoutParams layoutParams =
                 new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT ) ;
         layoutParams.setMargins( 5,5,5,5 ) ;
-        layoutParams.gravity = Gravity.START ;
+        layoutParams.gravity = Gravity.START;
+
 
         LinearLayout.LayoutParams myLayoutParams =
                 new LinearLayout.LayoutParams(
@@ -210,35 +216,76 @@ public class ChatActivity extends AppCompatActivity{
 
         chatContainer.removeAllViews() ;  // clear
         for( ChatMessage message : messages ) {
-
-            EmojiTextView txt = (EmojiTextView) LayoutInflater
-                    .from(btSend.getContext())
-                    .inflate(
-                            R.layout.emoji_text_view,
-                            linear_layout,
-                            false
-                    );
-
-            txt.setText( message.toChatString() ) ;
-            txt.setId(message.getId());
-            String authorMessage = message.getAuthor();
-            String currentAuthor = String.valueOf(etAuthor.getText());
-            txt.setPadding( 30, 25, 30, 25 ) ; //outside
-            if (authorMessage.contentEquals( currentAuthor ) ){
-                txt.setBackground( AppCompatResources.getDrawable(
-                        getApplicationContext(),
-                        R.drawable.my_message ) ) ;
-
-                txt.setLayoutParams(myLayoutParams);
-                txt.setOnClickListener(this::messageClick);
+            if (dateMessage == null){
+                EmojiTextView txtTime = (EmojiTextView) LayoutInflater
+                        .from(btSend.getContext())
+                        .inflate(
+                                R.layout.emoji_text_view,
+                                linear_layout,
+                                false
+                        );
+                txtTime.setPadding( 30, 25, 30, 25 ) ;
+                SimpleDateFormat formatter= new SimpleDateFormat("dd-MM");
+                dateMessage = message.getMoment();
+                txtTime.setText(formatter.format(dateMessage));
+                chatContainer.addView( txtTime ) ;
             }
-            else {
-                txt.setBackground( AppCompatResources.getDrawable(
-                        getApplicationContext(),
-                        R.drawable.message ) ) ;
-                txt.setLayoutParams(layoutParams);
+            else{
+                Date date1 = new Date(dateMessage.getYear(), dateMessage.getMonth(), dateMessage.getDate()); // Returns the current date and time
+                Date date2 = new Date(message.getMoment().getYear(), message.getMoment().getMonth(), message.getMoment().getDate());
+                if (date1.before(date2)){
+                    EmojiTextView txtTime = (EmojiTextView) LayoutInflater
+                            .from(btSend.getContext())
+                            .inflate(
+                                    R.layout.emoji_text_view,
+                                    linear_layout,
+                                    false
+                            );
+                    txtTime.setPadding( 30, 10, 30, 10 ) ;
+                    SimpleDateFormat formatter= new SimpleDateFormat("dd-MM");
+                    dateMessage = message.getMoment();
+                    txtTime.setText(formatter.format(dateMessage));
+                    txtTime.setLayoutParams(layoutDataParams);
+                    txtTime.setBackground( AppCompatResources.getDrawable(
+                            getApplicationContext(),
+                            R.drawable.time_message ) ) ;
+
+                    chatContainer.addView( txtTime ) ;
+
+                }
             }
-            chatContainer.addView( txt ) ;
+            if (! message.getText().equals("")){
+                EmojiTextView txt = (EmojiTextView) LayoutInflater
+                        .from(btSend.getContext())
+                        .inflate(
+                                R.layout.emoji_text_view,
+                                linear_layout,
+                                false
+                        );
+
+                txt.setText( message.toChatString() ) ;
+                txt.setId(message.getId());
+                String authorMessage = message.getAuthor();
+                txt.setPadding( 30, 25, 30, 25 ) ; //outside
+                if (authorMessage.contentEquals( author ) ){
+                    txt.setBackground( AppCompatResources.getDrawable(
+                            getApplicationContext(),
+                            R.drawable.my_message ) ) ;
+
+                    txt.setLayoutParams(myLayoutParams);
+                    txt.setOnClickListener(this::messageClick);
+                    txt.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+                }
+                else {
+                    txt.setBackground( AppCompatResources.getDrawable(
+                            getApplicationContext(),
+                            R.drawable.message ) ) ;
+                    txt.setLayoutParams(layoutParams);
+                    txt.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                }
+                chatContainer.addView( txt ) ;
+            }
+
         }
         new Thread( () ->
                 runOnUiThread( () ->
