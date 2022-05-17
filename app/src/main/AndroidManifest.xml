@@ -23,6 +23,7 @@
         <activity
             android:name=".ChatActivity"
             android:exported="false"
+            android:label="@string/title_activity_chat"
             android:parentActivityName=".PortalActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity

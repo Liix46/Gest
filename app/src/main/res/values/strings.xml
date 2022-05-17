@@ -19,8 +19,9 @@
     <string name="chat_message_empty">Напишите сообщение</string>
     <string name="chat_url_send">http://chat.momentfor.fun/?author=%s&amp;msg=%s</string>
     <string name="chat_url_get">http://chat.momentfor.fun/</string>
+    <string name="title_activity_chat">Chat</string>
 
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">Registration</string>
     <string name="prompt_email">Login</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>

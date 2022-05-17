@@ -241,7 +241,7 @@ public class ChatActivity extends AppCompatActivity{
                                     linear_layout,
                                     false
                             );
-                    txtTime.setPadding( 30, 10, 30, 10 ) ;
+                    txtTime.setPadding( 20, 10, 20, 10 ) ;
                     SimpleDateFormat formatter= new SimpleDateFormat("dd-MM");
                     dateMessage = message.getMoment();
                     txtTime.setText(formatter.format(dateMessage));
@@ -293,6 +293,7 @@ public class ChatActivity extends AppCompatActivity{
                                 ScrollView.FOCUS_DOWN
                         ) ) ).start() ;
 
+        dateMessage = null;
     }
 
     private void messageClick( View v ) {
